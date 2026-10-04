@@ -1303,6 +1303,23 @@ function createPlayer(color){
     1.05
   );
 
+// =========================
+// ANIMATION REFERENCES
+// =========================
+
+player.userData.leftArm = leftArm;
+player.userData.rightArm = rightArm;
+
+player.userData.leftLeg = leftLeg;
+player.userData.rightLeg = rightLeg;
+
+player.userData.leftBoot = leftBoot;
+player.userData.rightBoot = rightBoot;
+
+player.userData.animTime = Math.random() * 10;
+
+return player;
+        }
   return player;
 }
 
