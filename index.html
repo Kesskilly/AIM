@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>3D Football Game</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+        user-select: none;
+        -webkit-user-select: none;
+    }
+
+    body {
+        margin: 0;
+        overflow: hidden;
+        background: #000;
+        font-family: Arial, sans-serif;
+        touch-action: none;
+    }
+
+    canvas {
+        display: block;
+    }
+
+    #score {
+        position: fixed;
+        top: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+        color: white;
+        background: rgba(0,0,0,0.55);
+        padding: 10px 20px;
+        border-radius: 12px;
+        font-size: 22px;
+        font-weight: bold;
+    }
+
+    #message {
+        position: fixed;
+        top: 65px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+        color: white;
+        font-size: 15px;
+        text-align: center;
+    }
+
+    #joystick {
+        position: fixed;
+        left: 25px;
+        bottom: 25px;
+        width: 125px;
+        height: 125px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.18);
+        border: 2px solid rgba(255,255,255,0.4);
+        z-index: 20;
+    }
+
+    #stick {
+        position: absolute;
+        width: 55px;
+        height: 55px;
+        left: 35px;
+        top: 35px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.75);
+    }
+
+    .button {
+        position: fixed;
+        z-index: 20;
+        width: 85px;
+        height: 85px;
+        border-radius: 50%;
+        border: 2px solid rgba(255,255,255,0.5);
+        color: white;
+        font-size: 14px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0,0,0,0.5);
+    }
+
+    #shoot {
+        right: 25px;
+        bottom: 115px;
+    }
+
+    #pass {
+        right: 115px;
+        bottom: 35px;
+    }
+
+    #restart {
+        position: fixed;
+        top: 15px;
+        right: 15px;
+        z-index: 20;
+        padding: 9px 13px;
+        border: none;
+        border-radius: 8px;
+        background: white;
+        font-weight: bold;
+    }
+</style>
+</head>
+
+<body>
+
+<div id="score">BLUE 0 — 0 RED</div>
+<div id="message">Move with the joystick</div>
+
+<button id="restart">RESTART</button>
+
+<div id="joystick">
+    <div id="stick"></div>
+</div>
+
+<div id="shoot" class="button">SHOOT</div>
+<div id="pass" class="button">PASS</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+
+<script>
+/* =========================
+   GAME SETUP
+========================= */
+
+const scene = new THREE.Scene();
+
+scene.background = new THREE.Color(0x87ceeb);
+
+scene.fog = new THREE.Fog(
+    0x87ceeb,
+    35,
+    100
+);
+
+const camera = new THREE.PerspectiveCamera(
+    65,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    200
+);
+
+const renderer = new THREE.WebGLRenderer({
+    antialias: true
+});
+
+renderer.setSize(
+    window.innerWidth,
+    window.innerHeight
+);
+
+renderer.setPixelRatio(
+    Math.min(window.devicePixelRatio, 2)
+);
+
+document.body.appendChild(renderer.domElement);
+
+
+/* =========================
+   LIGHTING
+========================= */
+
+const hemiLight = new THREE.HemisphereLight(
+    0xffffff,
+    0x447744,
+    2
+);
+
+scene.add(hemiLight);
+
+const sun = new THREE.DirectionalLight(
+    0xffffff,
+    2
+);
+
+sun.position.set(10, 30, 10);
+
+scene.add(sun);
+
+
+/* =========================
+   PITCH
+========================= */
+
+const pitchWidth = 24;
+const pitchLength = 38;
+
+const pitchGeometry = new THREE.PlaneGeometry(
+    pitchWidth,
+    pitchLength
+);
+
+const pitchMaterial = new THREE.MeshStandardMaterial({
+    color: 0x188a35
+});
+
+const pitch = new THREE.Mesh(
+    pitchGeometry,
+    pitchMaterial
+);
+
+pitch.rotation.x = -Math.PI / 2;
+
+scene.add(pitch);
+
+
+/* =========================
+   FIELD LINES
+========================= */
+
+function line(x1, z1, x2, z2) {
+
+    const points = [];
+
+    points.push(
+        new THREE.Vector3(x1, 0.03, z1)
+    );
+
+    points.push(
+        new THREE.Vector3(x2, 0.03, z2)
+    );
+
+    const geometry =
+        new THREE.BufferGeometry()
+        .setFromPoints(points);
+
+    const material =
+        new THREE.LineBasicMaterial({
+            color: 0xffffff
+        });
+
+    const mesh =
+        new THREE.Line(
+            geometry,
+            material
+        );
+
+    scene.add(mesh);
+}
+
+
+/* Outer lines */
+
+line(-12, -19, 12, -19);
+line(12, -19, 12, 19);
+line(12, 19, -12, 19);
+line(-12, 19, -12, -19);
+
+
+/* Halfway line */
+
+line(-12, 0, 12, 0);
+
+
+/* Center circle */
+
+const circleGeometry =
+    new THREE.BufferGeometry();
+
+const circlePoints = [];
+
+for (
+    let i = 0;
+    i <= 64;
+    i++
+) {
+
+    const angle =
+        (i / 64) * Math.PI * 2;
+
+    circlePoints.push(
+        new THREE.Vector3(
+            Math.cos(angle) * 3,
+            0.04,
+            Math.sin(angle) * 3
+        )
+    );
+}
+
+circleGeometry.setFromPoints(circlePoints);
+
+const circle =
+    new THREE.Line(
+        circleGeometry,
+        new THREE.LineBasicMaterial({
+            color: 0xffffff
+        })
+    );
+
+scene.add(circle);
+
+
+/* =========================
+   GOALS
+========================= */
+
+function createGoal(z) {
+
+    const group = new THREE.Group();
+
+    const material =
+        new THREE.MeshStandardMaterial({
+            color: 0xffffff
+        });
+
+    const postGeometry =
+        new THREE.BoxGeometry(
+            0.3,
+            3,
+            0.3
+        );
+
+    const crossGeometry =
+        new THREE.BoxGeometry(
+            6,
+            0.3,
+            0.3
+        );
+
+    const left =
+        new THREE.Mesh(
+            postGeometry,
+            material
+        );
+
+    left.position.set(
+        -3,
+        1.5,
+        0
+    );
+
+    group.add(left);
+
+    const right =
+        new THREE.Mesh(
+            postGeometry,
+            material
+        );
+
+    right.position.set(
+        3,
+        1.5,
+        0
+    );
+
+    group.add(right);
+
+    const cross =
+        new THREE.Mesh(
+            crossGeometry,
+            material
+        );
+
+    cross.position.set(
+        0,
+        3,
+        0
+    );
+
+    group.add(cross);
+
+    group.position.z = z;
+
+    scene.add(group);
+}
+
+createGoal(-19);
+createGoal(19);
+
+
+/* =========================
+   PLAYERS
+========================= */
+
+function createPlayer(color) {
+
+    const group = new THREE.Group();
+
+    const body =
+        new THREE.Mesh(
+            new THREE.CapsuleGeometry(
+                0.45,
+                1.1,
+                4,
+                8
+            ),
+            new THREE.MeshStandardMaterial({
+                color: color
+            })
+        );
+
+    body.position.y = 1;
+
+    group.add(body);
+
+    const head =
+        new THREE.Mesh(
+            new THREE.SphereGeometry(
+                0.32,
+                16,
+                16
+            ),
+            new THREE.MeshStandardMaterial({
+                color: 0xffc79b
+            })
+        );
+
+    head.position.y = 2;
+
+    group.add(head);
+
+    return group;
+}
+
+
+/* Main player */
+
+const player =
+    createPlayer(0x1677ff);
+
+player.position.set(
+    0,
+    0,
+    10
+);
+
+scene.add(player);
+
+
+/* Opponents */
+
+const enemies = [];
+
+const enemyPositions = [
+    [-7, 0],
+    [7, 0],
+    [-4, -8],
+    [4, -8]
+];
+
+enemyPositions.forEach(pos => {
+
+    const enemy =
+        createPlayer(0xff2222);
+
+    enemy.position.set(
+        pos[0],
+        0,
+        pos[1]
+    );
+
+    scene.add(enemy);
+
+    enemies.push(enemy);
+});
+
+
+/* =========================
+   BALL
+========================= */
+
+const ball =
+    new THREE.Mesh(
+        new THREE.SphereGeometry(
+            0.35,
+            20,
+            20
+        ),
+        new THREE.MeshStandardMaterial({
+            color: 0xffffff
+        })
+    );
+
+ball.position.set(
+    0,
+    0.35,
+    7
+);
+
+scene.add(ball);
+
+let ballVelocity =
+    new THREE.Vector3(
+        0,
+        0,
+        0
+    );
+
+
+/* =========================
+   SCORE
+========================= */
+
+let blueScore = 0;
+let redScore = 0;
+
+function updateScore() {
+
+    document.getElementById(
+        "score"
+    ).textContent =
+        "BLUE " +
+        blueScore +
+        " — " +
+        redScore +
+        " RED";
+}
+
+
+/* =========================
+   JOYSTICK
+========================= */
+
+const joystick =
+    document.getElementById(
+        "joystick"
+    );
+
+const stick =
+    document.getElementById(
+        "stick"
+    );
+
+let joystickX = 0;
+let joystickY = 0;
+
+let joystickActive = false;
+
+function moveJoystick(x, y) {
+
+    const rect =
+        joystick.getBoundingClientRect();
+
+    const centerX =
+        rect.left +
+        rect.width / 2;
+
+    const centerY =
+        rect.top +
+        rect.height / 2;
+
+    let dx = x - centerX;
+    let dy = y - centerY;
+
+    const max =
+        rect.width / 2 - 28;
+
+    const distance =
+        Math.sqrt(
+            dx * dx +
+            dy * dy
+        );
+
+    if (distance > max) {
+
+        dx =
+            dx / distance * max;
+
+        dy =
+            dy / distance * max;
+    }
+
+    joystickX = dx / max;
+    joystickY = dy / max;
+
+    stick.style.transform =
+        `translate(${dx}px, ${dy}px)`;
+}
+
+
+joystick.addEventListener(
+    "pointerdown",
+    e => {
+
+        joystickActive = true;
+
+        joystick.setPointerCapture(
+            e.pointerId
+        );
+
+        moveJoystick(
+            e.clientX,
+            e.clientY
+        );
+    }
+);
+
+
+joystick.addEventListener(
+    "pointermove",
+    e => {
+
+        if (!joystickActive) return;
+
+        moveJoystick(
+            e.clientX,
+            e.clientY
+        );
+    }
+);
+
+
+joystick.addEventListener(
+    "pointerup",
+    e => {
+
+        joystickActive = false;
+
+        joystickX = 0;
+        joystickY = 0;
+
+        stick.style.transform =
+            "translate(0px, 0px)";
+    }
+);
+
+
+/* =========================
+   SHOOT
+========================= */
+
+function shoot() {
+
+    const distance =
+        player.position.distanceTo(
+            ball.position
+        );
+
+    if (distance < 3) {
+
+        const direction =
+            new THREE.Vector3(
+                0,
+                0,
+                -1
+            );
+
+        direction.applyQuaternion(
+            player.quaternion
+        );
+
+        ballVelocity.copy(
+            direction.multiplyScalar(12)
+        );
+
+        ballVelocity.y = 4;
+    }
+}
+
+document.getElementById(
+    "shoot"
+).addEventListener(
+    "pointerdown",
+    shoot
+);
+
+
+/* =========================
+   PASS
+========================= */
+
+function passBall() {
+
+    const distance =
+        player.position.distanceTo(
+            ball.position
+        );
+
+    if (distance < 3) {
+
+        const direction =
+            new THREE.Vector3(
+                0,
+                0,
+                -1
+            );
+
+        direction.applyQuaternion(
+            player.quaternion
+        );
+
+        ballVelocity.copy(
+            direction.multiplyScalar(7)
+        );
+
+        ballVelocity.y = 2;
+    }
+}
+
+document.getElementById(
+    "pass"
+).addEventListener(
+    "pointerdown",
+    passBall
+);
+
+
+/* =========================
+   RESTART
+========================= */
+
+document.getElementById(
+    "restart"
+).addEventListener(
+    "click",
+    () => {
+
+        blueScore = 0;
+        redScore = 0;
+
+        updateScore();
+
+        player.position.set(
+            0,
+            0,
+            10
+        );
+
+        ball.position.set(
+            0,
+            0.35,
+            7
+        );
+
+        ballVelocity.set(
+            0,
+            0,
+            0
+        );
+
+        enemies[0].position.set(
+            -7,
+            0,
+            0
+        );
+
+        enemies[1].position.set(
+            7,
+            0,
+            0
+        );
+
+        enemies[2].position.set(
+            -4,
+            0,
+            -8
+        );
+
+        enemies[3].position.set(
+            4,
+            0,
+            -8
+        );
+    }
+);
+
+
+/* =========================
+   GAME LOOP
+========================= */
+
+const clock =
+    new THREE.Clock();
+
+function animate() {
+
+    requestAnimationFrame(
+        animate
+    );
+
+    const delta =
+        Math.min(
+            clock.getDelta(),
+            0.05
+        );
+
+
+    /* PLAYER MOVEMENT */
+
+    const speed = 7;
+
+    const moveX =
+        joystickX * speed * delta;
+
+    const moveZ =
+        joystickY * speed * delta;
+
+    player.position.x += moveX;
+    player.position.z += moveZ;
+
+
+    /* Keep player on pitch */
+
+    player.position.x =
+        THREE.MathUtils.clamp(
+            player.position.x,
+            -11,
+            11
+        );
+
+    player.position.z =
+        THREE.MathUtils.clamp(
+            player.position.z,
+            -17,
+            17
+        );
+
+
+    /* Rotate player */
+
+    if (
+        Math.abs(joystickX) > 0.1 ||
+        Math.abs(joystickY) > 0.1
+    ) {
+
+        const angle =
+            Math.atan2(
+                joystickX,
+                joystickY
+            );
+
+        player.rotation.y =
+            angle;
+    }
+
+
+    /* =========================
+       BALL PHYSICS
+    ========================= */
+
+    ballVelocity.y -=
+        12 * delta;
+
+    ball.position.add(
+        ballVelocity.clone()
+            .multiplyScalar(delta)
+    );
+
+    if (ball.position.y < 0.35) {
+
+        ball.position.y = 0.35;
+
+        ballVelocity.y *= -0.45;
+
+        ballVelocity.x *= 0.98;
+        ballVelocity.z *= 0.98;
+    }
+
+
+    /* Friction */
+
+    ballVelocity.x *=
+        Math.pow(0.985, delta * 60);
+
+    ballVelocity.z *=
+        Math.pow(0.985, delta * 60);
+
+
+    /* Pitch boundaries */
+
+    if (ball.position.x > 11.5) {
+
+        ball.position.x = 11.5;
+
+        ballVelocity.x *= -0.7;
+    }
+
+    if (ball.position.x < -11.5) {
+
+        ball.position.x = -11.5;
+
+        ballVelocity.x *= -0.7;
+    }
+
+
+    /* =========================
+       GOAL DETECTION
+    ========================= */
+
+    if (
+        ball.position.z < -18.5 &&
+        Math.abs(ball.position.x) < 3
+    ) {
+
+        blueScore++;
+
+        updateScore();
+
+        resetBall();
+    }
+
+
+    if (
+        ball.position.z > 18.5 &&
+        Math.abs(ball.position.x) < 3
+    ) {
+
+        redScore++;
+
+        updateScore();
+
+        resetBall();
+    }
+
+
+    /* =========================
+       ENEMY AI
+    ========================= */
+
+    enemies.forEach(
+        enemy => {
+
+            const direction =
+                new THREE.Vector3()
+                    .subVectors(
+                        ball.position,
+                        enemy.position
+                    );
+
+            direction.y = 0;
+
+            const distance =
+                direction.length();
+
+            if (distance > 1.5) {
+
+                direction.normalize();
+
+                enemy.position.add(
+                    direction.multiplyScalar(
+                        2.2 * delta
+                    )
+                );
+
+                enemy.rotation.y =
+                    Math.atan2(
+                        direction.x,
+                        direction.z
+                    );
+            }
+        }
+    );
+
+
+    /* =========================
+       CAMERA
+    ========================= */
+
+    const cameraOffset =
+        new THREE.Vector3(
+            0,
+            8,
+            10
+        );
+
+    cameraOffset.applyQuaternion(
+        player.quaternion
+    );
+
+    const targetCamera =
+        player.position.clone()
+            .add(cameraOffset);
+
+    camera.position.lerp(
+        targetCamera,
+        0.1
+    );
+
+    camera.lookAt(
+        player.position.x,
+        0.5,
+        player.position.z - 3
+    );
+
+
+    renderer.render(
+        scene,
+        camera
+    );
+}
+
+
+/* =========================
+   RESET BALL
+========================= */
+
+function resetBall() {
+
+    ball.position.set(
+        0,
+        0.35,
+        0
+    );
+
+    ballVelocity.set(
+        0,
+        0,
+        0
+    );
+
+    player.position.set(
+        0,
+        0,
+        10
+    );
+}
+
+
+/* =========================
+   RESIZE
+========================= */
+
+window.addEventListener(
+    "resize",
+    () => {
+
+        camera.aspect =
+            window.innerWidth /
+            window.innerHeight;
+
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(
+            window.innerWidth,
+            window.innerHeight
+        );
+    }
+);
+
+
+/* START */
+
+updateScore();
+
+animate();
+
+</script>
+
+</body>
+  </html>
