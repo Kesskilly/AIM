@@ -3,117 +3,168 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>3D Football Game</title>
+<title>3D Football Game V2</title>
 
 <style>
-    * {
-        box-sizing: border-box;
-        user-select: none;
-        -webkit-user-select: none;
-    }
+* {
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-user-select: none;
+}
 
-    body {
-        margin: 0;
-        overflow: hidden;
-        background: #000;
-        font-family: Arial, sans-serif;
-        touch-action: none;
-    }
+body {
+    margin: 0;
+    overflow: hidden;
+    background: #000;
+    font-family: Arial, sans-serif;
+    touch-action: none;
+}
 
-    canvas {
-        display: block;
-    }
+canvas {
+    display: block;
+}
 
-    #score {
-        position: fixed;
-        top: 15px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 10;
-        color: white;
-        background: rgba(0,0,0,0.55);
-        padding: 10px 20px;
-        border-radius: 12px;
-        font-size: 22px;
-        font-weight: bold;
-    }
+#score {
+    position: fixed;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    color: white;
+    background: rgba(0,0,0,.65);
+    padding: 9px 18px;
+    border-radius: 12px;
+    font-size: 21px;
+    font-weight: bold;
+}
 
-    #message {
-        position: fixed;
-        top: 65px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 10;
-        color: white;
-        font-size: 15px;
-        text-align: center;
-    }
+#timer {
+    position: fixed;
+    top: 62px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    color: white;
+    background: rgba(0,0,0,.55);
+    padding: 6px 15px;
+    border-radius: 10px;
+    font-size: 17px;
+    font-weight: bold;
+}
 
-    #joystick {
-        position: fixed;
-        left: 25px;
-        bottom: 25px;
-        width: 125px;
-        height: 125px;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.18);
-        border: 2px solid rgba(255,255,255,0.4);
-        z-index: 20;
-    }
+#message {
+    position: fixed;
+    top: 95px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    color: white;
+    font-size: 14px;
+    text-align: center;
+}
 
-    #stick {
-        position: absolute;
-        width: 55px;
-        height: 55px;
-        left: 35px;
-        top: 35px;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.75);
-    }
+#joystick {
+    position: fixed;
+    left: 22px;
+    bottom: 22px;
+    width: 125px;
+    height: 125px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.17);
+    border: 2px solid rgba(255,255,255,.4);
+    z-index: 30;
+}
 
-    .button {
-        position: fixed;
-        z-index: 20;
-        width: 85px;
-        height: 85px;
-        border-radius: 50%;
-        border: 2px solid rgba(255,255,255,0.5);
-        color: white;
-        font-size: 14px;
-        font-weight: bold;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: rgba(0,0,0,0.5);
-    }
+#stick {
+    position: absolute;
+    width: 55px;
+    height: 55px;
+    left: 35px;
+    top: 35px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.8);
+}
 
-    #shoot {
-        right: 25px;
-        bottom: 115px;
-    }
+.button {
+    position: fixed;
+    z-index: 30;
+    width: 82px;
+    height: 82px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,.5);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,.55);
+}
 
-    #pass {
-        right: 115px;
-        bottom: 35px;
-    }
+#shoot {
+    right: 22px;
+    bottom: 115px;
+}
 
-    #restart {
-        position: fixed;
-        top: 15px;
-        right: 15px;
-        z-index: 20;
-        padding: 9px 13px;
-        border: none;
-        border-radius: 8px;
-        background: white;
-        font-weight: bold;
-    }
+#pass {
+    right: 112px;
+    bottom: 28px;
+}
+
+#sprint {
+    right: 22px;
+    bottom: 20px;
+}
+
+#restart {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 40;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+    background: white;
+    font-weight: bold;
+}
+
+#gameOver {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(0,0,0,.78);
+    color: white;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+#gameOver h1 {
+    font-size: 42px;
+    margin: 0 0 15px;
+}
+
+#finalScore {
+    font-size: 25px;
+    margin-bottom: 25px;
+}
+
+#playAgain {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
 </style>
 </head>
 
 <body>
 
 <div id="score">BLUE 0 — 0 RED</div>
+<div id="timer">01:30</div>
 <div id="message">Move with the joystick</div>
 
 <button id="restart">RESTART</button>
@@ -124,13 +175,21 @@
 
 <div id="shoot" class="button">SHOOT</div>
 <div id="pass" class="button">PASS</div>
+<div id="sprint" class="button">SPRINT</div>
+
+<div id="gameOver">
+    <h1 id="result">FULL TIME</h1>
+    <div id="finalScore">BLUE 0 — 0 RED</div>
+    <button id="playAgain">PLAY AGAIN</button>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 
 <script>
-/* =========================
-   GAME SETUP
-========================= */
+
+/* =====================================================
+   SETUP
+===================================================== */
 
 const scene = new THREE.Scene();
 
@@ -138,7 +197,7 @@ scene.background = new THREE.Color(0x87ceeb);
 
 scene.fog = new THREE.Fog(
     0x87ceeb,
-    35,
+    40,
     100
 );
 
@@ -165,17 +224,17 @@ renderer.setPixelRatio(
 document.body.appendChild(renderer.domElement);
 
 
-/* =========================
-   LIGHTING
-========================= */
+/* =====================================================
+   LIGHT
+===================================================== */
 
-const hemiLight = new THREE.HemisphereLight(
+const hemi = new THREE.HemisphereLight(
     0xffffff,
     0x447744,
     2
 );
 
-scene.add(hemiLight);
+scene.add(hemi);
 
 const sun = new THREE.DirectionalLight(
     0xffffff,
@@ -187,25 +246,21 @@ sun.position.set(10, 30, 10);
 scene.add(sun);
 
 
-/* =========================
+/* =====================================================
    PITCH
-========================= */
+===================================================== */
 
 const pitchWidth = 24;
 const pitchLength = 38;
 
-const pitchGeometry = new THREE.PlaneGeometry(
-    pitchWidth,
-    pitchLength
-);
-
-const pitchMaterial = new THREE.MeshStandardMaterial({
-    color: 0x188a35
-});
-
 const pitch = new THREE.Mesh(
-    pitchGeometry,
-    pitchMaterial
+    new THREE.PlaneGeometry(
+        pitchWidth,
+        pitchLength
+    ),
+    new THREE.MeshStandardMaterial({
+        color: 0x188a35
+    })
 );
 
 pitch.rotation.x = -Math.PI / 2;
@@ -213,99 +268,84 @@ pitch.rotation.x = -Math.PI / 2;
 scene.add(pitch);
 
 
-/* =========================
+/* =====================================================
    FIELD LINES
-========================= */
+===================================================== */
 
-function line(x1, z1, x2, z2) {
-
-    const points = [];
-
-    points.push(
-        new THREE.Vector3(x1, 0.03, z1)
-    );
-
-    points.push(
-        new THREE.Vector3(x2, 0.03, z2)
-    );
+function makeLine(x1, z1, x2, z2) {
 
     const geometry =
         new THREE.BufferGeometry()
-        .setFromPoints(points);
+        .setFromPoints([
+            new THREE.Vector3(
+                x1,
+                .04,
+                z1
+            ),
+            new THREE.Vector3(
+                x2,
+                .04,
+                z2
+            )
+        ]);
 
-    const material =
-        new THREE.LineBasicMaterial({
-            color: 0xffffff
-        });
-
-    const mesh =
+    const line =
         new THREE.Line(
             geometry,
-            material
+            new THREE.LineBasicMaterial({
+                color: 0xffffff
+            })
         );
 
-    scene.add(mesh);
+    scene.add(line);
 }
 
+makeLine(-12,-19,12,-19);
+makeLine(12,-19,12,19);
+makeLine(12,19,-12,19);
+makeLine(-12,19,-12,-19);
 
-/* Outer lines */
-
-line(-12, -19, 12, -19);
-line(12, -19, 12, 19);
-line(12, 19, -12, 19);
-line(-12, 19, -12, -19);
-
-
-/* Halfway line */
-
-line(-12, 0, 12, 0);
+makeLine(-12,0,12,0);
 
 
 /* Center circle */
 
-const circleGeometry =
-    new THREE.BufferGeometry();
-
 const circlePoints = [];
 
-for (
-    let i = 0;
-    i <= 64;
-    i++
-) {
+for(let i=0;i<=64;i++){
 
-    const angle =
-        (i / 64) * Math.PI * 2;
+    const a =
+        i / 64 * Math.PI * 2;
 
     circlePoints.push(
         new THREE.Vector3(
-            Math.cos(angle) * 3,
-            0.04,
-            Math.sin(angle) * 3
+            Math.cos(a) * 3,
+            .04,
+            Math.sin(a) * 3
         )
     );
 }
 
-circleGeometry.setFromPoints(circlePoints);
-
-const circle =
+const centerCircle =
     new THREE.Line(
-        circleGeometry,
+        new THREE.BufferGeometry()
+        .setFromPoints(circlePoints),
         new THREE.LineBasicMaterial({
             color: 0xffffff
         })
     );
 
-scene.add(circle);
+scene.add(centerCircle);
 
 
-/* =========================
+/* =====================================================
    GOALS
-========================= */
+===================================================== */
 
 function createGoal(z) {
 
-    const group = new THREE.Group();
+    const group =
+        new THREE.Group();
 
     const material =
         new THREE.MeshStandardMaterial({
@@ -314,16 +354,16 @@ function createGoal(z) {
 
     const postGeometry =
         new THREE.BoxGeometry(
-            0.3,
+            .3,
             3,
-            0.3
+            .3
         );
 
     const crossGeometry =
         new THREE.BoxGeometry(
             6,
-            0.3,
-            0.3
+            .3,
+            .3
         );
 
     const left =
@@ -368,6 +408,32 @@ function createGoal(z) {
 
     group.add(cross);
 
+
+    /* Net */
+
+    const net =
+        new THREE.Mesh(
+            new THREE.BoxGeometry(
+                6,
+                3,
+                1
+            ),
+            new THREE.MeshBasicMaterial({
+                color: 0xffffff,
+                transparent: true,
+                opacity: .12,
+                wireframe: true
+            })
+        );
+
+    net.position.set(
+        0,
+        1.5,
+        z < 0 ? .5 : -.5
+    );
+
+    group.add(net);
+
     group.position.z = z;
 
     scene.add(group);
@@ -377,18 +443,19 @@ createGoal(-19);
 createGoal(19);
 
 
-/* =========================
-   PLAYERS
-========================= */
+/* =====================================================
+   PLAYER
+===================================================== */
 
 function createPlayer(color) {
 
-    const group = new THREE.Group();
+    const group =
+        new THREE.Group();
 
     const body =
         new THREE.Mesh(
             new THREE.CapsuleGeometry(
-                0.45,
+                .45,
                 1.1,
                 4,
                 8
@@ -405,7 +472,7 @@ function createPlayer(color) {
     const head =
         new THREE.Mesh(
             new THREE.SphereGeometry(
-                0.32,
+                .32,
                 16,
                 16
             ),
@@ -436,42 +503,68 @@ player.position.set(
 scene.add(player);
 
 
-/* Opponents */
+/* =====================================================
+   OPPONENTS
+===================================================== */
 
 const enemies = [];
 
 const enemyPositions = [
-    [-7, 0],
-    [7, 0],
-    [-4, -8],
-    [4, -8]
+    [-7,0],
+    [7,0],
+    [-4,-7],
+    [4,-7]
 ];
 
-enemyPositions.forEach(pos => {
+enemyPositions.forEach(
+    pos => {
 
-    const enemy =
-        createPlayer(0xff2222);
+        const enemy =
+            createPlayer(0xff2222);
 
-    enemy.position.set(
-        pos[0],
-        0,
-        pos[1]
-    );
+        enemy.position.set(
+            pos[0],
+            0,
+            pos[1]
+        );
 
-    scene.add(enemy);
+        scene.add(enemy);
 
-    enemies.push(enemy);
-});
+        enemies.push(enemy);
+    }
+);
 
 
-/* =========================
+/* =====================================================
+   GOALKEEPER
+===================================================== */
+
+const goalkeeper =
+    createPlayer(0xffaa00);
+
+goalkeeper.scale.set(
+    1.05,
+    1.05,
+    1.05
+);
+
+goalkeeper.position.set(
+    0,
+    0,
+    -17.2
+);
+
+scene.add(goalkeeper);
+
+
+/* =====================================================
    BALL
-========================= */
+===================================================== */
 
 const ball =
     new THREE.Mesh(
         new THREE.SphereGeometry(
-            0.35,
+            .35,
             20,
             20
         ),
@@ -482,43 +575,59 @@ const ball =
 
 ball.position.set(
     0,
-    0.35,
+    .35,
     7
 );
 
 scene.add(ball);
 
 let ballVelocity =
-    new THREE.Vector3(
-        0,
-        0,
-        0
-    );
+    new THREE.Vector3();
 
 
-/* =========================
+/* =====================================================
    SCORE
-========================= */
+===================================================== */
 
 let blueScore = 0;
 let redScore = 0;
 
-function updateScore() {
+function updateScore(){
 
     document.getElementById(
         "score"
     ).textContent =
-        "BLUE " +
-        blueScore +
-        " — " +
-        redScore +
-        " RED";
+        `BLUE ${blueScore} — ${redScore} RED`;
 }
 
 
-/* =========================
+/* =====================================================
+   TIMER
+===================================================== */
+
+let timeLeft = 90;
+let gameRunning = true;
+
+function updateTimer(){
+
+    const minutes =
+        Math.floor(timeLeft / 60);
+
+    const seconds =
+        Math.floor(timeLeft % 60);
+
+    document.getElementById(
+        "timer"
+    ).textContent =
+        String(minutes).padStart(2,"0")
+        + ":" +
+        String(seconds).padStart(2,"0");
+}
+
+
+/* =====================================================
    JOYSTICK
-========================= */
+===================================================== */
 
 const joystick =
     document.getElementById(
@@ -532,10 +641,9 @@ const stick =
 
 let joystickX = 0;
 let joystickY = 0;
-
 let joystickActive = false;
 
-function moveJoystick(x, y) {
+function moveJoystick(x,y){
 
     const rect =
         joystick.getBoundingClientRect();
@@ -548,8 +656,11 @@ function moveJoystick(x, y) {
         rect.top +
         rect.height / 2;
 
-    let dx = x - centerX;
-    let dy = y - centerY;
+    let dx =
+        x - centerX;
+
+    let dy =
+        y - centerY;
 
     const max =
         rect.width / 2 - 28;
@@ -560,7 +671,7 @@ function moveJoystick(x, y) {
             dy * dy
         );
 
-    if (distance > max) {
+    if(distance > max){
 
         dx =
             dx / distance * max;
@@ -569,13 +680,15 @@ function moveJoystick(x, y) {
             dy / distance * max;
     }
 
-    joystickX = dx / max;
-    joystickY = dy / max;
+    joystickX =
+        dx / max;
+
+    joystickY =
+        dy / max;
 
     stick.style.transform =
-        `translate(${dx}px, ${dy}px)`;
+        `translate(${dx}px,${dy}px)`;
 }
-
 
 joystick.addEventListener(
     "pointerdown",
@@ -594,12 +707,11 @@ joystick.addEventListener(
     }
 );
 
-
 joystick.addEventListener(
     "pointermove",
     e => {
 
-        if (!joystickActive) return;
+        if(!joystickActive) return;
 
         moveJoystick(
             e.clientX,
@@ -608,10 +720,9 @@ joystick.addEventListener(
     }
 );
 
-
 joystick.addEventListener(
     "pointerup",
-    e => {
+    () => {
 
         joystickActive = false;
 
@@ -619,23 +730,58 @@ joystick.addEventListener(
         joystickY = 0;
 
         stick.style.transform =
-            "translate(0px, 0px)";
+            "translate(0px,0px)";
     }
 );
 
 
-/* =========================
-   SHOOT
-========================= */
+/* =====================================================
+   SPRINT
+===================================================== */
 
-function shoot() {
+let sprinting = false;
+
+const sprintButton =
+    document.getElementById(
+        "sprint"
+    );
+
+sprintButton.addEventListener(
+    "pointerdown",
+    () => {
+        sprinting = true;
+    }
+);
+
+sprintButton.addEventListener(
+    "pointerup",
+    () => {
+        sprinting = false;
+    }
+);
+
+sprintButton.addEventListener(
+    "pointercancel",
+    () => {
+        sprinting = false;
+    }
+);
+
+
+/* =====================================================
+   SHOOT
+===================================================== */
+
+function shoot(){
+
+    if(!gameRunning) return;
 
     const distance =
         player.position.distanceTo(
             ball.position
         );
 
-    if (distance < 3) {
+    if(distance < 3){
 
         const direction =
             new THREE.Vector3(
@@ -649,10 +795,10 @@ function shoot() {
         );
 
         ballVelocity.copy(
-            direction.multiplyScalar(12)
+            direction.multiplyScalar(14)
         );
 
-        ballVelocity.y = 4;
+        ballVelocity.y = 5;
     }
 }
 
@@ -664,18 +810,20 @@ document.getElementById(
 );
 
 
-/* =========================
+/* =====================================================
    PASS
-========================= */
+===================================================== */
 
-function passBall() {
+function passBall(){
+
+    if(!gameRunning) return;
 
     const distance =
         player.position.distanceTo(
             ball.position
         );
 
-    if (distance < 3) {
+    if(distance < 3){
 
         const direction =
             new THREE.Vector3(
@@ -689,10 +837,10 @@ function passBall() {
         );
 
         ballVelocity.copy(
-            direction.multiplyScalar(7)
+            direction.multiplyScalar(8)
         );
 
-        ballVelocity.y = 2;
+        ballVelocity.y = 2.5;
     }
 }
 
@@ -704,300 +852,15 @@ document.getElementById(
 );
 
 
-/* =========================
-   RESTART
-========================= */
-
-document.getElementById(
-    "restart"
-).addEventListener(
-    "click",
-    () => {
-
-        blueScore = 0;
-        redScore = 0;
-
-        updateScore();
-
-        player.position.set(
-            0,
-            0,
-            10
-        );
-
-        ball.position.set(
-            0,
-            0.35,
-            7
-        );
-
-        ballVelocity.set(
-            0,
-            0,
-            0
-        );
-
-        enemies[0].position.set(
-            -7,
-            0,
-            0
-        );
-
-        enemies[1].position.set(
-            7,
-            0,
-            0
-        );
-
-        enemies[2].position.set(
-            -4,
-            0,
-            -8
-        );
-
-        enemies[3].position.set(
-            4,
-            0,
-            -8
-        );
-    }
-);
-
-
-/* =========================
-   GAME LOOP
-========================= */
-
-const clock =
-    new THREE.Clock();
-
-function animate() {
-
-    requestAnimationFrame(
-        animate
-    );
-
-    const delta =
-        Math.min(
-            clock.getDelta(),
-            0.05
-        );
-
-
-    /* PLAYER MOVEMENT */
-
-    const speed = 7;
-
-    const moveX =
-        joystickX * speed * delta;
-
-    const moveZ =
-        joystickY * speed * delta;
-
-    player.position.x += moveX;
-    player.position.z += moveZ;
-
-
-    /* Keep player on pitch */
-
-    player.position.x =
-        THREE.MathUtils.clamp(
-            player.position.x,
-            -11,
-            11
-        );
-
-    player.position.z =
-        THREE.MathUtils.clamp(
-            player.position.z,
-            -17,
-            17
-        );
-
-
-    /* Rotate player */
-
-    if (
-        Math.abs(joystickX) > 0.1 ||
-        Math.abs(joystickY) > 0.1
-    ) {
-
-        const angle =
-            Math.atan2(
-                joystickX,
-                joystickY
-            );
-
-        player.rotation.y =
-            angle;
-    }
-
-
-    /* =========================
-       BALL PHYSICS
-    ========================= */
-
-    ballVelocity.y -=
-        12 * delta;
-
-    ball.position.add(
-        ballVelocity.clone()
-            .multiplyScalar(delta)
-    );
-
-    if (ball.position.y < 0.35) {
-
-        ball.position.y = 0.35;
-
-        ballVelocity.y *= -0.45;
-
-        ballVelocity.x *= 0.98;
-        ballVelocity.z *= 0.98;
-    }
-
-
-    /* Friction */
-
-    ballVelocity.x *=
-        Math.pow(0.985, delta * 60);
-
-    ballVelocity.z *=
-        Math.pow(0.985, delta * 60);
-
-
-    /* Pitch boundaries */
-
-    if (ball.position.x > 11.5) {
-
-        ball.position.x = 11.5;
-
-        ballVelocity.x *= -0.7;
-    }
-
-    if (ball.position.x < -11.5) {
-
-        ball.position.x = -11.5;
-
-        ballVelocity.x *= -0.7;
-    }
-
-
-    /* =========================
-       GOAL DETECTION
-    ========================= */
-
-    if (
-        ball.position.z < -18.5 &&
-        Math.abs(ball.position.x) < 3
-    ) {
-
-        blueScore++;
-
-        updateScore();
-
-        resetBall();
-    }
-
-
-    if (
-        ball.position.z > 18.5 &&
-        Math.abs(ball.position.x) < 3
-    ) {
-
-        redScore++;
-
-        updateScore();
-
-        resetBall();
-    }
-
-
-    /* =========================
-       ENEMY AI
-    ========================= */
-
-    enemies.forEach(
-        enemy => {
-
-            const direction =
-                new THREE.Vector3()
-                    .subVectors(
-                        ball.position,
-                        enemy.position
-                    );
-
-            direction.y = 0;
-
-            const distance =
-                direction.length();
-
-            if (distance > 1.5) {
-
-                direction.normalize();
-
-                enemy.position.add(
-                    direction.multiplyScalar(
-                        2.2 * delta
-                    )
-                );
-
-                enemy.rotation.y =
-                    Math.atan2(
-                        direction.x,
-                        direction.z
-                    );
-            }
-        }
-    );
-
-
-    /* =========================
-       CAMERA
-    ========================= */
-
-    const cameraOffset =
-        new THREE.Vector3(
-            0,
-            8,
-            10
-        );
-
-    cameraOffset.applyQuaternion(
-        player.quaternion
-    );
-
-    const targetCamera =
-        player.position.clone()
-            .add(cameraOffset);
-
-    camera.position.lerp(
-        targetCamera,
-        0.1
-    );
-
-    camera.lookAt(
-        player.position.x,
-        0.5,
-        player.position.z - 3
-    );
-
-
-    renderer.render(
-        scene,
-        camera
-    );
-}
-
-
-/* =========================
+/* =====================================================
    RESET BALL
-========================= */
+===================================================== */
 
-function resetBall() {
+function resetBall(){
 
     ball.position.set(
         0,
-        0.35,
+        .35,
         0
     );
 
@@ -1015,9 +878,480 @@ function resetBall() {
 }
 
 
-/* =========================
+/* =====================================================
+   GOAL
+===================================================== */
+
+function scoreGoal(team){
+
+    if(team === "BLUE"){
+        blueScore++;
+    }else{
+        redScore++;
+    }
+
+    updateScore();
+
+    document.getElementById(
+        "message"
+    ).textContent =
+        team + " GOAL!";
+
+    setTimeout(() => {
+
+        if(gameRunning){
+
+            document.getElementById(
+                "message"
+            ).textContent =
+                "Keep playing!";
+        }
+
+    },1800);
+
+    resetBall();
+}
+
+
+/* =====================================================
+   GOALKEEPER AI
+===================================================== */
+
+function updateGoalkeeper(delta){
+
+    const targetX =
+        THREE.MathUtils.clamp(
+            ball.position.x,
+            -2.5,
+            2.5
+        );
+
+    goalkeeper.position.x +=
+        (targetX -
+        goalkeeper.position.x)
+        * Math.min(
+            delta * 5,
+            1
+        );
+
+    goalkeeper.position.z =
+        -17.2;
+
+    goalkeeper.lookAt(
+        ball.position.x,
+        1,
+        ball.position.z
+    );
+
+
+    /* Goalkeeper saves ball */
+
+    const distance =
+        goalkeeper.position.distanceTo(
+            ball.position
+        );
+
+    if(distance < 1.25){
+
+        const away =
+            ball.position.clone()
+            .sub(goalkeeper.position);
+
+        away.y = 0;
+
+        if(away.length() > 0){
+
+            away.normalize();
+
+            ballVelocity.x =
+                away.x * 9;
+
+            ballVelocity.z =
+                away.z * 9;
+
+            ballVelocity.y = 4;
+        }
+    }
+}
+
+
+/* =====================================================
+   ENEMY AI
+===================================================== */
+
+function updateEnemies(delta){
+
+    enemies.forEach(
+        enemy => {
+
+            const direction =
+                new THREE.Vector3()
+                .subVectors(
+                    ball.position,
+                    enemy.position
+                );
+
+            direction.y = 0;
+
+            const distance =
+                direction.length();
+
+            if(distance > 1.5){
+
+                direction.normalize();
+
+                enemy.position.add(
+                    direction.multiplyScalar(
+                        2.5 * delta
+                    )
+                );
+
+                enemy.rotation.y =
+                    Math.atan2(
+                        direction.x,
+                        direction.z
+                    );
+            }
+
+            enemy.position.x =
+                THREE.MathUtils.clamp(
+                    enemy.position.x,
+                    -11,
+                    11
+                );
+
+            enemy.position.z =
+                THREE.MathUtils.clamp(
+                    enemy.position.z,
+                    -17,
+                    17
+                );
+        }
+    );
+}
+
+
+/* =====================================================
+   GAME OVER
+===================================================== */
+
+function endGame(){
+
+    gameRunning = false;
+
+    joystickX = 0;
+    joystickY = 0;
+
+    sprinting = false;
+
+    let result = "DRAW";
+
+    if(blueScore > redScore){
+        result = "YOU WIN!";
+    }
+
+    if(blueScore < redScore){
+        result = "YOU LOSE!";
+    }
+
+    document.getElementById(
+        "result"
+    ).textContent = result;
+
+    document.getElementById(
+        "finalScore"
+    ).textContent =
+        `BLUE ${blueScore} — ${redScore} RED`;
+
+    document.getElementById(
+        "gameOver"
+    ).style.display = "flex";
+}
+
+
+/* =====================================================
+   START / RESTART
+===================================================== */
+
+function startGame(){
+
+    blueScore = 0;
+    redScore = 0;
+
+    timeLeft = 90;
+
+    gameRunning = true;
+
+    updateScore();
+    updateTimer();
+
+    player.position.set(
+        0,
+        0,
+        10
+    );
+
+    player.rotation.y = 0;
+
+    ball.position.set(
+        0,
+        .35,
+        7
+    );
+
+    ballVelocity.set(
+        0,
+        0,
+        0
+    );
+
+    goalkeeper.position.set(
+        0,
+        0,
+        -17.2
+    );
+
+    enemies[0].position.set(
+        -7,0,0
+    );
+
+    enemies[1].position.set(
+        7,0,0
+    );
+
+    enemies[2].position.set(
+        -4,0,-7
+    );
+
+    enemies[3].position.set(
+        4,0,-7
+    );
+
+    document.getElementById(
+        "message"
+    ).textContent =
+        "Move with the joystick";
+
+    document.getElementById(
+        "gameOver"
+    ).style.display =
+        "none";
+}
+
+document.getElementById(
+    "restart"
+).addEventListener(
+    "click",
+    startGame
+);
+
+document.getElementById(
+    "playAgain"
+).addEventListener(
+    "click",
+    startGame
+);
+
+
+/* =====================================================
+   MAIN GAME LOOP
+===================================================== */
+
+const clock =
+    new THREE.Clock();
+
+let timerAccumulator = 0;
+
+function animate(){
+
+    requestAnimationFrame(
+        animate
+    );
+
+    const delta =
+        Math.min(
+            clock.getDelta(),
+            .05
+        );
+
+    if(gameRunning){
+
+        /* TIMER */
+
+        timerAccumulator += delta;
+
+        if(timerAccumulator >= 1){
+
+            timerAccumulator = 0;
+
+            timeLeft--;
+
+            updateTimer();
+
+            if(timeLeft <= 0){
+
+                timeLeft = 0;
+
+                updateTimer();
+
+                endGame();
+            }
+        }
+
+
+        /* PLAYER */
+
+        const speed =
+            sprinting ? 11 : 7;
+
+        player.position.x +=
+            joystickX *
+            speed *
+            delta;
+
+        player.position.z +=
+            joystickY *
+            speed *
+            delta;
+
+        player.position.x =
+            THREE.MathUtils.clamp(
+                player.position.x,
+                -11,
+                11
+            );
+
+        player.position.z =
+            THREE.MathUtils.clamp(
+                player.position.z,
+                -17,
+                17
+            );
+
+
+        /* PLAYER ROTATION */
+
+        if(
+            Math.abs(joystickX) > .1 ||
+            Math.abs(joystickY) > .1
+        ){
+
+            player.rotation.y =
+                Math.atan2(
+                    joystickX,
+                    joystickY
+                );
+        }
+
+
+        /* BALL */
+
+        ballVelocity.y -=
+            12 * delta;
+
+        ball.position.add(
+            ballVelocity
+            .clone()
+            .multiplyScalar(delta)
+        );
+
+        if(ball.position.y < .35){
+
+            ball.position.y = .35;
+
+            ballVelocity.y *= -.45;
+        }
+
+
+        ballVelocity.x *=
+            Math.pow(.985,delta*60);
+
+        ballVelocity.z *=
+            Math.pow(.985,delta*60);
+
+
+        /* SIDE WALLS */
+
+        if(ball.position.x > 11.5){
+
+            ball.position.x = 11.5;
+
+            ballVelocity.x *= -.7;
+        }
+
+        if(ball.position.x < -11.5){
+
+            ball.position.x = -11.5;
+
+            ballVelocity.x *= -.7;
+        }
+
+
+        /* GOALS */
+
+        if(
+            ball.position.z < -18.5 &&
+            Math.abs(ball.position.x) < 3
+        ){
+
+            scoreGoal("BLUE");
+        }
+
+        if(
+            ball.position.z > 18.5 &&
+            Math.abs(ball.position.x) < 3
+        ){
+
+            scoreGoal("RED");
+        }
+
+
+        updateEnemies(delta);
+
+        updateGoalkeeper(delta);
+    }
+
+
+    /* CAMERA */
+
+    const offset =
+        new THREE.Vector3(
+            0,
+            8,
+            10
+        );
+
+    offset.applyQuaternion(
+        player.quaternion
+    );
+
+    const target =
+        player.position
+        .clone()
+        .add(offset);
+
+    camera.position.lerp(
+        target,
+        .1
+    );
+
+    camera.lookAt(
+        player.position.x,
+        .5,
+        player.position.z - 3
+    );
+
+
+    renderer.render(
+        scene,
+        camera
+    );
+}
+
+
+/* =====================================================
    RESIZE
-========================= */
+===================================================== */
 
 window.addEventListener(
     "resize",
@@ -1039,11 +1373,11 @@ window.addEventListener(
 
 /* START */
 
-updateScore();
+startGame();
 
 animate();
 
 </script>
 
 </body>
-  </html>
+</html>
