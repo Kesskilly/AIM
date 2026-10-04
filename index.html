@@ -830,80 +830,480 @@ createGoal(29);
    PLAYER
 ============================================================ */
 
-function createPlayer(
-  color
-){
+function createPlayer(color){
 
-  const group=
-    new THREE.Group();
+  const player = new THREE.Group();
 
+  // =========================
+  // MATERIALS
+  // =========================
 
-  const body=
-    new THREE.Mesh(
-      new THREE.CapsuleGeometry(
-        .46,
-        .9,
-        6,
-        10
-      ),
-      new THREE.MeshStandardMaterial({
-        color
-      })
-    );
+  const skin = new THREE.MeshStandardMaterial({
+    color: 0xc68662,
+    roughness: 0.8
+  });
 
-  body.position.y=1;
+  const darkSkin = new THREE.MeshStandardMaterial({
+    color: 0x75452f,
+    roughness: 0.85
+  });
 
-  body.castShadow=true;
+  const kit = new THREE.MeshStandardMaterial({
+    color: color,
+    roughness: 0.65
+  });
 
-  group.add(body);
+  const shortsColor =
+    color === 0x1976ff
+      ? 0x092b78
+      : 0x8b1010;
 
+  const shortsMat = new THREE.MeshStandardMaterial({
+    color: shortsColor,
+    roughness: 0.7
+  });
 
-  const head=
-    new THREE.Mesh(
-      new THREE.SphereGeometry(
-        .29,
-        12,
-        12
-      ),
-      new THREE.MeshStandardMaterial({
-        color:0xd9a078
-      })
-    );
+  const sockMat = new THREE.MeshStandardMaterial({
+    color: 0xf1f1f1,
+    roughness: 0.8
+  });
 
-  head.position.y=2;
+  const bootMat = new THREE.MeshStandardMaterial({
+    color: 0x111111,
+    roughness: 0.45
+  });
 
-  head.castShadow=true;
+  const hairMat = new THREE.MeshStandardMaterial({
+    color: 0x17120e,
+    roughness: 0.9
+  });
 
-  group.add(head);
+  // =========================
+  // BODY
+  // =========================
 
-
-  /*
-    Small white shirt number.
-    Simple visual detail.
-  */
-
-  const stripe=
-    new THREE.Mesh(
-      new THREE.BoxGeometry(
-        .72,
-        .15,
-        .05
-      ),
-      new THREE.MeshBasicMaterial({
-        color:0xffffff
-      })
-    );
-
-  stripe.position.set(
-    0,
-    1.2,
-    -.45
+  const body = new THREE.Mesh(
+    new THREE.CapsuleGeometry(
+      0.42,
+      0.75,
+      6,
+      12
+    ),
+    kit
   );
 
-  group.add(stripe);
+  body.position.y = 1.45;
+  body.scale.set(1, 1, 0.7);
+  body.castShadow = true;
 
+  player.add(body);
 
-  return group;
+  // =========================
+  // NECK
+  // =========================
+
+  const neck = new THREE.Mesh(
+    new THREE.CylinderGeometry(
+      0.13,
+      0.15,
+      0.22,
+      10
+    ),
+    skin
+  );
+
+  neck.position.y = 2.02;
+  neck.castShadow = true;
+
+  player.add(neck);
+
+  // =========================
+  // HEAD
+  // =========================
+
+  const head = new THREE.Mesh(
+    new THREE.SphereGeometry(
+      0.29,
+      18,
+      14
+    ),
+    skin
+  );
+
+  head.position.y = 2.35;
+  head.scale.set(
+    0.92,
+    1.08,
+    0.92
+  );
+
+  head.castShadow = true;
+
+  player.add(head);
+
+  // =========================
+  // HAIR
+  // =========================
+
+  const hair = new THREE.Mesh(
+    new THREE.SphereGeometry(
+      0.30,
+      16,
+      10,
+      0,
+      Math.PI * 2,
+      0,
+      Math.PI * 0.55
+    ),
+    hairMat
+  );
+
+  hair.position.y = 2.48;
+  hair.scale.set(
+    1,
+    0.75,
+    1
+  );
+
+  hair.castShadow = true;
+
+  player.add(hair);
+
+  // =========================
+  // EARS
+  // =========================
+
+  const earGeo =
+    new THREE.SphereGeometry(
+      0.065,
+      8,
+      8
+    );
+
+  const ear1 =
+    new THREE.Mesh(
+      earGeo,
+      skin
+    );
+
+  const ear2 =
+    new THREE.Mesh(
+      earGeo,
+      skin
+    );
+
+  ear1.position.set(
+    -0.28,
+    2.34,
+    0
+  );
+
+  ear2.position.set(
+    0.28,
+    2.34,
+    0
+  );
+
+  player.add(
+    ear1,
+    ear2
+  );
+
+  // =========================
+  // ARMS
+  // =========================
+
+  const armGeo =
+    new THREE.CapsuleGeometry(
+      0.115,
+      0.58,
+      5,
+      8
+    );
+
+  const leftArm =
+    new THREE.Mesh(
+      armGeo,
+      kit
+    );
+
+  const rightArm =
+    new THREE.Mesh(
+      armGeo,
+      kit
+    );
+
+  leftArm.position.set(
+    -0.48,
+    1.45,
+    0
+  );
+
+  rightArm.position.set(
+    0.48,
+    1.45,
+    0
+  );
+
+  leftArm.rotation.z = -0.10;
+  rightArm.rotation.z = 0.10;
+
+  leftArm.castShadow = true;
+  rightArm.castShadow = true;
+
+  player.add(
+    leftArm,
+    rightArm
+  );
+
+  // =========================
+  // HANDS
+  // =========================
+
+  const handGeo =
+    new THREE.SphereGeometry(
+      0.12,
+      10,
+      10
+    );
+
+  const leftHand =
+    new THREE.Mesh(
+      handGeo,
+      skin
+    );
+
+  const rightHand =
+    new THREE.Mesh(
+      handGeo,
+      skin
+    );
+
+  leftHand.position.set(
+    -0.50,
+    1.08,
+    0
+  );
+
+  rightHand.position.set(
+    0.50,
+    1.08,
+    0
+  );
+
+  player.add(
+    leftHand,
+    rightHand
+  );
+
+  // =========================
+  // SHORTS
+  // =========================
+
+  const shorts =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(
+        0.76,
+        0.40,
+        0.48
+      ),
+      shortsMat
+    );
+
+  shorts.position.y = 0.98;
+
+  shorts.castShadow = true;
+
+  player.add(shorts);
+
+  // =========================
+  // LEGS
+  // =========================
+
+  const legGeo =
+    new THREE.CapsuleGeometry(
+      0.14,
+      0.62,
+      5,
+      8
+    );
+
+  const leftLeg =
+    new THREE.Mesh(
+      legGeo,
+      skin
+    );
+
+  const rightLeg =
+    new THREE.Mesh(
+      legGeo,
+      skin
+    );
+
+  leftLeg.position.set(
+    -0.20,
+    0.57,
+    0
+  );
+
+  rightLeg.position.set(
+    0.20,
+    0.57,
+    0
+  );
+
+  leftLeg.castShadow = true;
+  rightLeg.castShadow = true;
+
+  player.add(
+    leftLeg,
+    rightLeg
+  );
+
+  // =========================
+  // SOCKS
+  // =========================
+
+  const sockGeo =
+    new THREE.CylinderGeometry(
+      0.145,
+      0.16,
+      0.36,
+      10
+    );
+
+  const leftSock =
+    new THREE.Mesh(
+      sockGeo,
+      sockMat
+    );
+
+  const rightSock =
+    new THREE.Mesh(
+      sockGeo,
+      sockMat
+    );
+
+  leftSock.position.set(
+    -0.20,
+    0.23,
+    0
+  );
+
+  rightSock.position.set(
+    0.20,
+    0.23,
+    0
+  );
+
+  player.add(
+    leftSock,
+    rightSock
+  );
+
+  // =========================
+  // FOOTBALL BOOTS
+  // =========================
+
+  const bootGeo =
+    new THREE.BoxGeometry(
+      0.24,
+      0.13,
+      0.46
+    );
+
+  const leftBoot =
+    new THREE.Mesh(
+      bootGeo,
+      bootMat
+    );
+
+  const rightBoot =
+    new THREE.Mesh(
+      bootGeo,
+      bootMat
+    );
+
+  leftBoot.position.set(
+    -0.20,
+    0.08,
+    -0.08
+  );
+
+  rightBoot.position.set(
+    0.20,
+    0.08,
+    -0.08
+  );
+
+  leftBoot.castShadow = true;
+  rightBoot.castShadow = true;
+
+  player.add(
+    leftBoot,
+    rightBoot
+  );
+
+  // =========================
+  // SHIRT DETAILS
+  // =========================
+
+  const collar =
+    new THREE.Mesh(
+      new THREE.TorusGeometry(
+        0.17,
+        0.035,
+        8,
+        20
+      ),
+      sockMat
+    );
+
+  collar.rotation.x =
+    Math.PI / 2;
+
+  collar.position.set(
+    0,
+    2.00,
+    0
+  );
+
+  player.add(collar);
+
+  // =========================
+  // SHIRT NUMBER
+  // =========================
+
+  const numberPlate =
+    new THREE.Mesh(
+      new THREE.PlaneGeometry(
+        0.32,
+        0.32
+      ),
+      new THREE.MeshBasicMaterial({
+        color: 0xffffff
+      })
+    );
+
+  numberPlate.position.set(
+    0,
+    1.48,
+    -0.30
+  );
+
+  player.add(numberPlate);
+
+  // =========================
+  // SCALE
+  // =========================
+
+  player.scale.set(
+    1.05,
+    1.05,
+    1.05
+  );
+
+  return player;
 }
 
 
