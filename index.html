@@ -1619,6 +1619,63 @@ function movePlayer(){
       joystickX,
       joystickY
     );
+        
+    );// Running animation
+const moving =
+  Math.sqrt(
+    joystickX * joystickX +
+    joystickY * joystickY
+  ) > 0.08;
+
+if (moving && controlled) {
+
+  controlled.userData.animTime +=
+    sprint ? 0.42 : 0.30;
+
+  const t =
+    controlled.userData.animTime;
+
+  const armSwing =
+    Math.sin(t) * 0.65;
+
+  const legSwing =
+    Math.sin(t) * 0.75;
+
+  // Arms
+  if (controlled.userData.leftArm) {
+    controlled.userData.leftArm.rotation.x =
+      armSwing;
+  }
+
+  if (controlled.userData.rightArm) {
+    controlled.userData.rightArm.rotation.x =
+      -armSwing;
+  }
+
+  // Legs
+  if (controlled.userData.leftLeg) {
+    controlled.userData.leftLeg.rotation.x =
+      -legSwing;
+  }
+
+  if (controlled.userData.rightLeg) {
+    controlled.userData.rightLeg.rotation.x =
+      legSwing;
+  }
+
+  // Boots
+  if (controlled.userData.leftBoot) {
+    controlled.userData.leftBoot.rotation.x =
+      -legSwing;
+  }
+
+  if (controlled.userData.rightBoot) {
+    controlled.userData.rightBoot.rotation.x =
+      legSwing;
+  }
+
+}
+
 }
 
 
