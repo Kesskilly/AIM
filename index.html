@@ -3,160 +3,188 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>3D Football Game V2</title>
+<title>Football Game V3</title>
 
 <style>
-* {
-    box-sizing: border-box;
-    user-select: none;
-    -webkit-user-select: none;
+*{
+    box-sizing:border-box;
+    user-select:none;
+    -webkit-user-select:none;
 }
 
-body {
-    margin: 0;
-    overflow: hidden;
-    background: #000;
-    font-family: Arial, sans-serif;
-    touch-action: none;
+body{
+    margin:0;
+    overflow:hidden;
+    background:#000;
+    font-family:Arial,sans-serif;
+    touch-action:none;
 }
 
-canvas {
-    display: block;
+canvas{
+    display:block;
 }
 
-#score {
-    position: fixed;
-    top: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 20;
-    color: white;
-    background: rgba(0,0,0,.65);
-    padding: 9px 18px;
-    border-radius: 12px;
-    font-size: 21px;
-    font-weight: bold;
+#score{
+    position:fixed;
+    top:10px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:20;
+    color:white;
+    background:rgba(0,0,0,.7);
+    padding:8px 18px;
+    border-radius:12px;
+    font-size:20px;
+    font-weight:bold;
 }
 
-#timer {
-    position: fixed;
-    top: 62px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 20;
-    color: white;
-    background: rgba(0,0,0,.55);
-    padding: 6px 15px;
-    border-radius: 10px;
-    font-size: 17px;
-    font-weight: bold;
+#timer{
+    position:fixed;
+    top:55px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:20;
+    color:white;
+    background:rgba(0,0,0,.55);
+    padding:5px 13px;
+    border-radius:9px;
+    font-size:16px;
+    font-weight:bold;
 }
 
-#message {
-    position: fixed;
-    top: 95px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 20;
-    color: white;
-    font-size: 14px;
-    text-align: center;
+#stats{
+    position:fixed;
+    top:88px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:20;
+    color:white;
+    background:rgba(0,0,0,.45);
+    padding:4px 10px;
+    border-radius:8px;
+    font-size:11px;
 }
 
-#joystick {
-    position: fixed;
-    left: 22px;
-    bottom: 22px;
-    width: 125px;
-    height: 125px;
-    border-radius: 50%;
-    background: rgba(255,255,255,.17);
-    border: 2px solid rgba(255,255,255,.4);
-    z-index: 30;
+#message{
+    position:fixed;
+    top:112px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:20;
+    color:white;
+    font-size:13px;
+    text-align:center;
 }
 
-#stick {
-    position: absolute;
-    width: 55px;
-    height: 55px;
-    left: 35px;
-    top: 35px;
-    border-radius: 50%;
-    background: rgba(255,255,255,.8);
+#joystick{
+    position:fixed;
+    left:20px;
+    bottom:20px;
+    width:125px;
+    height:125px;
+    border-radius:50%;
+    background:rgba(255,255,255,.16);
+    border:2px solid rgba(255,255,255,.4);
+    z-index:30;
 }
 
-.button {
-    position: fixed;
-    z-index: 30;
-    width: 82px;
-    height: 82px;
-    border-radius: 50%;
-    border: 2px solid rgba(255,255,255,.5);
-    color: white;
-    font-size: 12px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0,0,0,.55);
+#stick{
+    position:absolute;
+    width:55px;
+    height:55px;
+    left:35px;
+    top:35px;
+    border-radius:50%;
+    background:rgba(255,255,255,.82);
 }
 
-#shoot {
-    right: 22px;
-    bottom: 115px;
+.button{
+    position:fixed;
+    z-index:30;
+    width:78px;
+    height:78px;
+    border-radius:50%;
+    border:2px solid rgba(255,255,255,.5);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+    font-weight:bold;
+    background:rgba(0,0,0,.58);
 }
 
-#pass {
-    right: 112px;
-    bottom: 28px;
+#shoot{
+    right:20px;
+    bottom:120px;
 }
 
-#sprint {
-    right: 22px;
-    bottom: 20px;
+#pass{
+    right:108px;
+    bottom:25px;
 }
 
-#restart {
-    position: fixed;
-    top: 12px;
-    right: 12px;
-    z-index: 40;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 8px;
-    background: white;
-    font-weight: bold;
+#sprint{
+    right:20px;
+    bottom:25px;
 }
 
-#gameOver {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 100;
-    background: rgba(0,0,0,.78);
-    color: white;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    text-align: center;
+#switch{
+    right:108px;
+    bottom:115px;
 }
 
-#gameOver h1 {
-    font-size: 42px;
-    margin: 0 0 15px;
+#tackle{
+    right:196px;
+    bottom:25px;
 }
 
-#finalScore {
-    font-size: 25px;
-    margin-bottom: 25px;
+#restart{
+    position:fixed;
+    right:10px;
+    top:10px;
+    z-index:40;
+    border:none;
+    border-radius:7px;
+    padding:7px 10px;
+    font-weight:bold;
 }
 
-#playAgain {
-    padding: 14px 28px;
-    border: none;
-    border-radius: 10px;
-    font-size: 18px;
-    font-weight: bold;
+#gameOver{
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:100;
+    background:rgba(0,0,0,.82);
+    color:white;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    text-align:center;
+}
+
+#gameOver h1{
+    font-size:40px;
+    margin:0 0 15px;
+}
+
+#finalScore{
+    font-size:25px;
+    margin-bottom:12px;
+}
+
+#finalStats{
+    font-size:14px;
+    margin-bottom:25px;
+    line-height:1.7;
+}
+
+#playAgain{
+    padding:13px 25px;
+    border:0;
+    border-radius:9px;
+    font-size:17px;
+    font-weight:bold;
 }
 </style>
 </head>
@@ -165,6 +193,7 @@ canvas {
 
 <div id="score">BLUE 0 — 0 RED</div>
 <div id="timer">01:30</div>
+<div id="stats">SHOTS 0 | TACKLES 0 | PASSES 0</div>
 <div id="message">Move with the joystick</div>
 
 <button id="restart">RESTART</button>
@@ -176,10 +205,13 @@ canvas {
 <div id="shoot" class="button">SHOOT</div>
 <div id="pass" class="button">PASS</div>
 <div id="sprint" class="button">SPRINT</div>
+<div id="switch" class="button">SWITCH</div>
+<div id="tackle" class="button">TACKLE</div>
 
 <div id="gameOver">
     <h1 id="result">FULL TIME</h1>
     <div id="finalScore">BLUE 0 — 0 RED</div>
+    <div id="finalStats"></div>
     <button id="playAgain">PLAY AGAIN</button>
 </div>
 
@@ -188,7 +220,7 @@ canvas {
 <script>
 
 /* =====================================================
-   SETUP
+   BASIC SETUP
 ===================================================== */
 
 const scene = new THREE.Scene();
@@ -204,12 +236,12 @@ scene.fog = new THREE.Fog(
 const camera = new THREE.PerspectiveCamera(
     65,
     window.innerWidth / window.innerHeight,
-    0.1,
+    .1,
     200
 );
 
 const renderer = new THREE.WebGLRenderer({
-    antialias: true
+    antialias:true
 });
 
 renderer.setSize(
@@ -218,30 +250,35 @@ renderer.setSize(
 );
 
 renderer.setPixelRatio(
-    Math.min(window.devicePixelRatio, 2)
+    Math.min(window.devicePixelRatio,2)
 );
 
 document.body.appendChild(renderer.domElement);
 
 
 /* =====================================================
-   LIGHT
+   LIGHTING
 ===================================================== */
 
-const hemi = new THREE.HemisphereLight(
-    0xffffff,
-    0x447744,
-    2
+scene.add(
+    new THREE.HemisphereLight(
+        0xffffff,
+        0x447744,
+        2
+    )
 );
 
-scene.add(hemi);
+const sun =
+    new THREE.DirectionalLight(
+        0xffffff,
+        2
+    );
 
-const sun = new THREE.DirectionalLight(
-    0xffffff,
-    2
+sun.position.set(
+    10,
+    30,
+    10
 );
-
-sun.position.set(10, 30, 10);
 
 scene.add(sun);
 
@@ -250,20 +287,19 @@ scene.add(sun);
    PITCH
 ===================================================== */
 
-const pitchWidth = 24;
-const pitchLength = 38;
+const pitch =
+    new THREE.Mesh(
+        new THREE.PlaneGeometry(
+            24,
+            38
+        ),
+        new THREE.MeshStandardMaterial({
+            color:0x188a35
+        })
+    );
 
-const pitch = new THREE.Mesh(
-    new THREE.PlaneGeometry(
-        pitchWidth,
-        pitchLength
-    ),
-    new THREE.MeshStandardMaterial({
-        color: 0x188a35
-    })
-);
-
-pitch.rotation.x = -Math.PI / 2;
+pitch.rotation.x =
+    -Math.PI / 2;
 
 scene.add(pitch);
 
@@ -272,45 +308,39 @@ scene.add(pitch);
    FIELD LINES
 ===================================================== */
 
-function makeLine(x1, z1, x2, z2) {
+function line(x1,z1,x2,z2){
 
     const geometry =
         new THREE.BufferGeometry()
         .setFromPoints([
             new THREE.Vector3(
-                x1,
-                .04,
-                z1
+                x1,.04,z1
             ),
             new THREE.Vector3(
-                x2,
-                .04,
-                z2
+                x2,.04,z2
             )
         ]);
 
-    const line =
+    scene.add(
         new THREE.Line(
             geometry,
             new THREE.LineBasicMaterial({
-                color: 0xffffff
+                color:0xffffff
             })
-        );
-
-    scene.add(line);
+        )
+    );
 }
 
-makeLine(-12,-19,12,-19);
-makeLine(12,-19,12,19);
-makeLine(12,19,-12,19);
-makeLine(-12,19,-12,-19);
-
-makeLine(-12,0,12,0);
+line(-12,-19,12,-19);
+line(12,-19,12,19);
+line(12,19,-12,19);
+line(-12,19,-12,-19);
+line(-12,0,12,0);
 
 
 /* Center circle */
 
-const circlePoints = [];
+const circlePoints=[];
 
 for(let i=0;i<=64;i++){
 
@@ -319,122 +349,96 @@ for(let i=0;i<=64;i++){
 
     circlePoints.push(
         new THREE.Vector3(
-            Math.cos(a) * 3,
+            Math.cos(a)*3,
             .04,
-            Math.sin(a) * 3
+            Math.sin(a)*3
         )
     );
 }
 
-const centerCircle =
+scene.add(
     new THREE.Line(
         new THREE.BufferGeometry()
         .setFromPoints(circlePoints),
         new THREE.LineBasicMaterial({
-            color: 0xffffff
+            color:0xffffff
         })
-    );
-
-scene.add(centerCircle);
+    )
+);
 
 
 /* =====================================================
    GOALS
 ===================================================== */
 
-function createGoal(z) {
+function createGoal(z){
 
     const group =
         new THREE.Group();
 
-    const material =
+    const mat =
         new THREE.MeshStandardMaterial({
-            color: 0xffffff
+            color:0xffffff
         });
 
-    const postGeometry =
+    const post =
         new THREE.BoxGeometry(
-            .3,
-            3,
-            .3
+            .3,3,.3
         );
 
-    const crossGeometry =
+    const cross =
         new THREE.BoxGeometry(
-            6,
-            .3,
-            .3
+            6,.3,.3
         );
 
     const left =
-        new THREE.Mesh(
-            postGeometry,
-            material
-        );
+        new THREE.Mesh(post,mat);
 
     left.position.set(
-        -3,
-        1.5,
-        0
+        -3,1.5,0
     );
 
     group.add(left);
 
     const right =
-        new THREE.Mesh(
-            postGeometry,
-            material
-        );
+        new THREE.Mesh(post,mat);
 
     right.position.set(
-        3,
-        1.5,
-        0
+        3,1.5,0
     );
 
     group.add(right);
 
-    const cross =
-        new THREE.Mesh(
-            crossGeometry,
-            material
-        );
+    const bar =
+        new THREE.Mesh(cross,mat);
 
-    cross.position.set(
-        0,
-        3,
-        0
+    bar.position.set(
+        0,3,0
     );
 
-    group.add(cross);
-
-
-    /* Net */
+    group.add(bar);
 
     const net =
         new THREE.Mesh(
             new THREE.BoxGeometry(
-                6,
-                3,
-                1
+                6,3,1
             ),
             new THREE.MeshBasicMaterial({
-                color: 0xffffff,
-                transparent: true,
-                opacity: .12,
-                wireframe: true
+                color:0xffffff,
+                transparent:true,
+                opacity:.12,
+                wireframe:true
             })
         );
 
-    net.position.set(
-        0,
-        1.5,
-        z < 0 ? .5 : -.5
-    );
+    net.position.z =
+        z < 0 ? .5 : -.5;
+
+    net.position.y=1.5;
 
     group.add(net);
 
-    group.position.z = z;
+    group.position.z=z;
 
     scene.add(group);
 }
@@ -444,10 +448,13 @@ createGoal(19);
 
 
 /* =====================================================
-   PLAYER
+   PLAYER CREATION
 ===================================================== */
 
-function createPlayer(color) {
+function createPlayer(
+    color,
+    number
+){
 
     const group =
         new THREE.Group();
@@ -455,33 +462,33 @@ function createPlayer(color) {
     const body =
         new THREE.Mesh(
             new THREE.CapsuleGeometry(
-                .45,
-                1.1,
+                .42,
+                1.05,
                 4,
                 8
             ),
             new THREE.MeshStandardMaterial({
-                color: color
+                color:color
             })
         );
 
-    body.position.y = 1;
+    body.position.y=1;
 
     group.add(body);
 
     const head =
         new THREE.Mesh(
             new THREE.SphereGeometry(
-                .32,
+                .3,
                 16,
                 16
             ),
             new THREE.MeshStandardMaterial({
-                color: 0xffc79b
+                color:0xffc79b
             })
         );
 
-    head.position.y = 2;
+    head.position.y=1.95;
 
     group.add(head);
 
@@ -489,48 +496,80 @@ function createPlayer(color) {
 }
 
 
-/* Main player */
+/* =====================================================
+   TEAM DATA
+===================================================== */
 
-const player =
-    createPlayer(0x1677ff);
-
-player.position.set(
-    0,
-    0,
-    10
-);
-
-scene.add(player);
+const blueTeam=[];
+const redTeam=[];
 
 
 /* =====================================================
-   OPPONENTS
+   BLUE TEAM
 ===================================================== */
 
-const enemies = [];
-
-const enemyPositions = [
-    [-7,0],
-    [7,0],
-    [-4,-7],
-    [4,-7]
+const bluePositions=[
+    [0,10],
+    [-7,6],
+    [7,6],
+    [-5,1],
+    [5,1],
+    [0,-4]
 ];
 
-enemyPositions.forEach(
-    pos => {
+bluePositions.forEach(
+    (pos,index)=>{
 
-        const enemy =
-            createPlayer(0xff2222);
+        const p =
+            createPlayer(
+                0x1677ff,
+                index+1
+            );
 
-        enemy.position.set(
+        p.position.set(
             pos[0],
             0,
             pos[1]
         );
 
-        scene.add(enemy);
+        scene.add(p);
 
-        enemies.push(enemy);
+        blueTeam.push(p);
+    }
+);
+
+
+/* =====================================================
+   RED TEAM
+===================================================== */
+
+const redPositions=[
+    [0,-10],
+    [-7,-5],
+    [7,-5],
+    [-5,-1],
+    [5,-1],
+    [0,5]
+];
+
+redPositions.forEach(
+    (pos,index)=>{
+
+        const p =
+            createPlayer(
+                0xff2222,
+                index+1
+            );
+
+        p.position.set(
+            pos[0],
+            0,
+            pos[1]
+        );
+
+        scene.add(p);
+
+        redTeam.push(p);
     }
 );
 
@@ -540,13 +579,10 @@ enemyPositions.forEach(
 ===================================================== */
 
 const goalkeeper =
-    createPlayer(0xffaa00);
-
-goalkeeper.scale.set(
-    1.05,
-    1.05,
-    1.05
-);
+    createPlayer(
+        0xffaa00,
+        1
+    );
 
 goalkeeper.position.set(
     0,
@@ -555,6 +591,42 @@ goalkeeper.position.set(
 );
 
 scene.add(goalkeeper);
+
+
+/* =====================================================
+   ACTIVE PLAYER
+===================================================== */
+
+let activeIndex=0;
+
+let player =
+    blueTeam[activeIndex];
+
+let ballOwner=null;
+
+
+/* Highlight active player */
+
+function updateActivePlayer(){
+
+    blueTeam.forEach(
+        p=>{
+            p.scale.set(
+                1,
+                1,
+                1
+            );
+        }
+    );
+
+    player.scale.set(
+        1.12,
+        1.12,
+        1.12
+    );
+}
+
+updateActivePlayer();
 
 
 /* =====================================================
@@ -569,7 +641,7 @@ const ball =
             20
         ),
         new THREE.MeshStandardMaterial({
-            color: 0xffffff
+            color:0xffffff
         })
     );
 
@@ -586,11 +658,15 @@ let ballVelocity =
 
 
 /* =====================================================
-   SCORE
+   SCORE + STATS
 ===================================================== */
 
-let blueScore = 0;
-let redScore = 0;
+let blueScore=0;
+let redScore=0;
+
+let shots=0;
+let tackles=0;
+let passes=0;
 
 function updateScore(){
 
@@ -600,28 +676,37 @@ function updateScore(){
         `BLUE ${blueScore} — ${redScore} RED`;
 }
 
+function updateStats(){
+
+    document.getElementById(
+        "stats"
+    ).textContent =
+        `SHOTS ${shots} | TACKLES ${tackles} | PASSES ${passes}`;
+}
+
 
 /* =====================================================
    TIMER
 ===================================================== */
 
-let timeLeft = 90;
-let gameRunning = true;
+let timeLeft=90;
+let timerAccumulator=0;
+let gameRunning=true;
 
 function updateTimer(){
 
-    const minutes =
-        Math.floor(timeLeft / 60);
+    const m =
+        Math.floor(timeLeft/60);
 
-    const seconds =
-        Math.floor(timeLeft % 60);
+    const s =
+        timeLeft%60;
 
     document.getElementById(
         "timer"
     ).textContent =
-        String(minutes).padStart(2,"0")
+        String(m).padStart(2,"0")
         + ":" +
-        String(seconds).padStart(2,"0");
+        String(s).padStart(2,"0");
 }
 
 
@@ -639,9 +724,9 @@ const stick =
         "stick"
     );
 
-let joystickX = 0;
-let joystickY = 0;
-let joystickActive = false;
+let joystickX=0;
+let joystickY=0;
+let joystickActive=false;
 
 function moveJoystick(x,y){
 
@@ -649,42 +734,36 @@ function moveJoystick(x,y){
         joystick.getBoundingClientRect();
 
     const centerX =
-        rect.left +
-        rect.width / 2;
+        rect.left+
+        rect.width/2;
 
     const centerY =
-        rect.top +
-        rect.height / 2;
+        rect.top+
+        rect.height/2;
 
-    let dx =
-        x - centerX;
-
-    let dy =
-        y - centerY;
+    let dx=x-centerX;
+    let dy=y-centerY;
 
     const max =
-        rect.width / 2 - 28;
+        rect.width/2-28;
 
     const distance =
         Math.sqrt(
-            dx * dx +
-            dy * dy
+            dx*dx+
+            dy*dy
         );
 
-    if(distance > max){
+    if(distance>max){
 
-        dx =
-            dx / distance * max;
+        dx=
+            dx/distance*max;
 
-        dy =
-            dy / distance * max;
+        dy=
+            dy/distance*max;
     }
 
-    joystickX =
-        dx / max;
-
-    joystickY =
-        dy / max;
+    joystickX=dx/max;
+    joystickY=dy/max;
 
     stick.style.transform =
         `translate(${dx}px,${dy}px)`;
@@ -692,9 +771,9 @@ function moveJoystick(x,y){
 
 joystick.addEventListener(
     "pointerdown",
-    e => {
+    e=>{
 
-        joystickActive = true;
+        joystickActive=true;
 
         joystick.setPointerCapture(
             e.pointerId
@@ -709,9 +788,10 @@ joystick.addEventListener(
 
 joystick.addEventListener(
     "pointermove",
-    e => {
+    e=>{
 
-        if(!joystickActive) return;
+        if(!joystickActive)
+            return;
 
         moveJoystick(
             e.clientX,
@@ -722,14 +802,14 @@ joystick.addEventListener(
 
 joystick.addEventListener(
     "pointerup",
-    () => {
+    ()=>{
 
-        joystickActive = false;
+        joystickActive=false;
 
-        joystickX = 0;
-        joystickY = 0;
+        joystickX=0;
+        joystickY=0;
 
-        stick.style.transform =
+        stick.style.transform=
             "translate(0px,0px)";
     }
 );
@@ -739,7 +819,7 @@ joystick.addEventListener(
    SPRINT
 ===================================================== */
 
-let sprinting = false;
+let sprinting=false;
 
 const sprintButton =
     document.getElementById(
@@ -748,24 +828,126 @@ const sprintButton =
 
 sprintButton.addEventListener(
     "pointerdown",
-    () => {
-        sprinting = true;
+    ()=>{
+        sprinting=true;
     }
 );
 
 sprintButton.addEventListener(
     "pointerup",
-    () => {
-        sprinting = false;
+    ()=>{
+        sprinting=false;
     }
 );
 
 sprintButton.addEventListener(
     "pointercancel",
-    () => {
-        sprinting = false;
+    ()=>{
+        sprinting=false;
     }
 );
+
+
+/* =====================================================
+   PLAYER SWITCH
+===================================================== */
+
+function switchPlayer(){
+
+    if(!gameRunning)
+        return;
+
+    activeIndex++;
+
+    if(activeIndex>=blueTeam.length)
+        activeIndex=0;
+
+    player=
+        blueTeam[activeIndex];
+
+    updateActivePlayer();
+
+    document.getElementById(
+        "message"
+    ).textContent=
+        "Player switched";
+}
+
+document.getElementById(
+    "switch"
+).addEventListener(
+    "pointerdown",
+    switchPlayer
+);
+
+
+/* =====================================================
+   BALL POSSESSION
+===================================================== */
+
+function tryTakeBall(){
+
+    const distance =
+        player.position.distanceTo(
+            ball.position
+        );
+
+    if(distance<1.4){
+
+        ballOwner=player;
+
+        ballVelocity.set(
+            0,0,0
+        );
+    }
+}
+
+
+/* Keep ball near player */
+
+function updatePossession(){
+
+    if(!ballOwner)
+        return;
+
+    if(
+        !blueTeam.includes(
+            ballOwner
+        )
+    ){
+
+        ballOwner=null;
+
+        return;
+    }
+
+    const forward =
+        new THREE.Vector3(
+            0,
+            0,
+            -1
+        );
+
+    forward.applyQuaternion(
+        ballOwner.quaternion
+    );
+
+    const target =
+        ballOwner.position
+        .clone()
+        .add(
+            forward.multiplyScalar(
+                .85
+            )
+        );
+
+    target.y=.35;
+
+    ball.position.lerp(
+        target,
+        .35
+    );
+}
 
 
 /* =====================================================
@@ -774,20 +956,24 @@ sprintButton.addEventListener(
 
 function shoot(){
 
-    if(!gameRunning) return;
+    if(!gameRunning)
+        return;
 
     const distance =
         player.position.distanceTo(
             ball.position
         );
 
-    if(distance < 3){
+    if(
+        distance<2.2 ||
+        ballOwner===player
+    ){
+
+        ballOwner=null;
 
         const direction =
             new THREE.Vector3(
-                0,
-                0,
-                -1
+                0,0,-1
             );
 
         direction.applyQuaternion(
@@ -795,10 +981,16 @@ function shoot(){
         );
 
         ballVelocity.copy(
-            direction.multiplyScalar(14)
+            direction.multiplyScalar(
+                15
+            )
         );
 
-        ballVelocity.y = 5;
+        ballVelocity.y=5;
+
+        shots++;
+
+        updateStats();
     }
 }
 
@@ -816,31 +1008,70 @@ document.getElementById(
 
 function passBall(){
 
-    if(!gameRunning) return;
+    if(!gameRunning)
+        return;
 
     const distance =
         player.position.distanceTo(
             ball.position
         );
 
-    if(distance < 3){
+    if(
+        distance<2.2 ||
+        ballOwner===player
+    ){
 
-        const direction =
-            new THREE.Vector3(
-                0,
-                0,
-                -1
+        ballOwner=null;
+
+        let teammate=null;
+
+        let nearest=Infinity;
+
+        blueTeam.forEach(
+            mate=>{
+
+                if(mate===player)
+                    return;
+
+                const d =
+                    player.position
+                    .distanceTo(
+                        mate.position
+                    );
+
+                if(d<nearest){
+
+                    nearest=d;
+                    teammate=mate;
+                }
+            }
+        );
+
+        if(teammate){
+
+            const direction =
+                new THREE.Vector3()
+                .subVectors(
+                    teammate.position,
+                    player.position
+                );
+
+            direction.y=0;
+
+            direction.normalize();
+
+            ballVelocity.copy(
+                direction.multiplyScalar(
+                    9
+                )
             );
 
-        direction.applyQuaternion(
-            player.quaternion
-        );
+            ballVelocity.y=2;
 
-        ballVelocity.copy(
-            direction.multiplyScalar(8)
-        );
+            passes++;
 
-        ballVelocity.y = 2.5;
+            updateStats();
+        }
     }
 }
 
@@ -853,68 +1084,257 @@ document.getElementById(
 
 
 /* =====================================================
-   RESET BALL
+   TACKLE
 ===================================================== */
 
-function resetBall(){
+function tackle(){
 
-    ball.position.set(
-        0,
-        .35,
-        0
+    if(!gameRunning)
+        return;
+
+    let closest=null;
+    let closestDistance=Infinity;
+
+    redTeam.forEach(
+        enemy=>{
+
+            const d =
+                player.position
+                .distanceTo(
+                    enemy.position
+                );
+
+            if(d<closestDistance){
+
+                closestDistance=d;
+                closest=enemy;
+            }
+        }
     );
 
-    ballVelocity.set(
-        0,
-        0,
-        0
-    );
+    if(
+        closest &&
+        closestDistance<2
+    ){
 
-    player.position.set(
-        0,
-        0,
-        10
-    );
-}
+        const direction =
+            new THREE.Vector3()
+            .subVectors(
+                closest.position,
+                player.position
+            );
 
+        direction.y=0;
 
-/* =====================================================
-   GOAL
-===================================================== */
+        if(direction.length()>0){
 
-function scoreGoal(team){
+            direction.normalize();
 
-    if(team === "BLUE"){
-        blueScore++;
-    }else{
-        redScore++;
-    }
-
-    updateScore();
-
-    document.getElementById(
-        "message"
-    ).textContent =
-        team + " GOAL!";
-
-    setTimeout(() => {
-
-        if(gameRunning){
-
-            document.getElementById(
-                "message"
-            ).textContent =
-                "Keep playing!";
+            closest.position.add(
+                direction.multiplyScalar(
+                    .9
+                )
+            );
         }
 
-    },1800);
+        ballOwner=null;
 
-    resetBall();
+        const away =
+            closest.position
+            .clone()
+            .sub(player.position);
+
+        away.y=0;
+
+        if(away.length()>0){
+
+            away.normalize();
+
+            ballVelocity.copy(
+                away.multiplyScalar(
+                    6
+                )
+            );
+
+            ballVelocity.y=2;
+        }
+
+        tackles++;
+
+        updateStats();
+
+        document.getElementById(
+            "message"
+        ).textContent=
+            "Great tackle!";
+    }
+}
+
+document.getElementById(
+    "tackle"
+).addEventListener(
+    "pointerdown",
+    tackle
+);
+
+
+/* =====================================================
+   ENEMY AI
+===================================================== */
+
+function updateRedTeam(delta){
+
+    redTeam.forEach(
+        (enemy,index)=>{
+
+            let target;
+
+            if(index===0){
+
+                target =
+                    ball.position.clone();
+
+            }else{
+
+                target =
+                    player.position.clone();
+
+            }
+
+            const direction =
+                target.sub(
+                    enemy.position
+                );
+
+            direction.y=0;
+
+            const distance =
+                direction.length();
+
+            if(distance>1.8){
+
+                direction.normalize();
+
+                enemy.position.add(
+                    direction.multiplyScalar(
+                        1.8*delta
+                    )
+                );
+
+                enemy.rotation.y=
+                    Math.atan2(
+                        direction.x,
+                        direction.z
+                    );
+            }
+
+            enemy.position.x=
+                THREE.MathUtils.clamp(
+                    enemy.position.x,
+                    -11,
+                    11
+                );
+
+            enemy.position.z=
+                THREE.MathUtils.clamp(
+                    enemy.position.z,
+                    -17,
+                    17
+                );
+        }
+    );
+
+
+    /* Red player can steal */
+
+    redTeam.forEach(
+        enemy=>{
+
+            const d =
+                enemy.position
+                .distanceTo(
+                    ball.position
+                );
+
+            if(
+                d<1 &&
+                !ballOwner
+            ){
+
+                ballOwner=enemy;
+            }
+        }
+    );
 }
 
 
 /* =====================================================
-   GOALKEEPER AI
+   RED POSSESSION
+===================================================== */
+
+function updateRedPossession(){
+
+    if(
+        !ballOwner ||
+        blueTeam.includes(ballOwner)
+    )
+        return;
+
+    const direction =
+        new THREE.Vector3(
+            0,0,1
+        );
+
+    direction.applyQuaternion(
+        ballOwner.quaternion
+    );
+
+    const target =
+        ballOwner.position
+        .clone()
+        .add(
+            direction.multiplyScalar(
+                .8
+            )
+        );
+
+    target.y=.35;
+
+    ball.position.lerp(
+        target,
+        .3
+    );
+
+    /* Red player eventually shoots */
+
+    if(
+        ballOwner.position.z>10
+    ){
+
+        const shootDirection =
+            new THREE.Vector3(
+                0,0,1
+            );
+
+        shootDirection.applyQuaternion(
+            ballOwner.quaternion
+        );
+
+        ballOwner=null;
+
+        ballVelocity.copy(
+            shootDirection.multiplyScalar(
+                10
+            )
+        );
+
+        ballVelocity.y=4;
+    }
+}
+
+
+/* =====================================================
+   GOALKEEPER
 ===================================================== */
 
 function updateGoalkeeper(delta){
@@ -927,14 +1347,16 @@ function updateGoalkeeper(delta){
         );
 
     goalkeeper.position.x +=
-        (targetX -
-        goalkeeper.position.x)
-        * Math.min(
-            delta * 5,
+        (
+            targetX-
+            goalkeeper.position.x
+        ) *
+        Math.min(
+            delta*5,
             1
         );
 
-    goalkeeper.position.z =
+    goalkeeper.position.z=
         -17.2;
 
     goalkeeper.lookAt(
@@ -943,90 +1365,127 @@ function updateGoalkeeper(delta){
         ball.position.z
     );
 
-
-    /* Goalkeeper saves ball */
-
     const distance =
-        goalkeeper.position.distanceTo(
+        goalkeeper.position
+        .distanceTo(
             ball.position
         );
 
-    if(distance < 1.25){
+    if(distance<1.3){
+
+        ballOwner=null;
 
         const away =
-            ball.position.clone()
-            .sub(goalkeeper.position);
+            ball.position
+            .clone()
+            .sub(
+                goalkeeper.position
+            );
 
-        away.y = 0;
+        away.y=0;
 
-        if(away.length() > 0){
+        if(away.length()>0){
 
             away.normalize();
 
-            ballVelocity.x =
-                away.x * 9;
+            ballVelocity.x=
+                away.x*9;
 
-            ballVelocity.z =
-                away.z * 9;
+            ballVelocity.z=
+                away.z*9;
 
-            ballVelocity.y = 4;
+            ballVelocity.y=4;
         }
     }
 }
 
 
 /* =====================================================
-   ENEMY AI
+   BALL PHYSICS
 ===================================================== */
 
-function updateEnemies(delta){
+function updateBall(delta){
 
-    enemies.forEach(
-        enemy => {
+    if(ballOwner)
+        return;
 
-            const direction =
-                new THREE.Vector3()
-                .subVectors(
-                    ball.position,
-                    enemy.position
-                );
+    ballVelocity.y -=
+        12*delta;
 
-            direction.y = 0;
+    ball.position.add(
+        ballVelocity
+        .clone()
+        .multiplyScalar(delta)
+    );
 
-            const distance =
-                direction.length();
+    if(ball.position.y<.35){
 
-            if(distance > 1.5){
+        ball.position.y=.35;
 
-                direction.normalize();
+        ballVelocity.y*= -.45;
+    }
 
-                enemy.position.add(
-                    direction.multiplyScalar(
-                        2.5 * delta
-                    )
-                );
+    ballVelocity.x *=
+        Math.pow(
+            .985,
+            delta*60
+        );
 
-                enemy.rotation.y =
-                    Math.atan2(
-                        direction.x,
-                        direction.z
-                    );
-            }
+    ballVelocity.z *=
+        Math.pow(
+            .985,
+            delta*60
+        );
 
-            enemy.position.x =
-                THREE.MathUtils.clamp(
-                    enemy.position.x,
-                    -11,
-                    11
-                );
 
-            enemy.position.z =
-                THREE.MathUtils.clamp(
-                    enemy.position.z,
-                    -17,
-                    17
-                );
-        }
+    /* Walls */
+
+    if(ball.position.x>11.5){
+
+        ball.position.x=11.5;
+
+        ballVelocity.x*= -.7;
+    }
+
+    if(ball.position.x<-11.5){
+
+        ball.position.x=-11.5;
+
+        ballVelocity.x*= -.7;
+    }
+}
+
+
+/* =====================================================
+   GOALS
+===================================================== */
+
+function scoreGoal(team){
+
+    ballOwner=null;
+
+    if(team==="BLUE")
+        blueScore++;
+    else
+        redScore++;
+
+    updateScore();
+
+    document.getElementById(
+        "message"
+    ).textContent=
+        team+" GOAL!";
+
+    ball.position.set(
+        0,.35,0
+    );
+
+    ballVelocity.set(
+        0,0,0
+    );
+
+    player.position.set(
+        0,0,10
     );
 }
 
@@ -1037,130 +1496,143 @@ function updateEnemies(delta){
 
 function endGame(){
 
-    gameRunning = false;
+    gameRunning=false;
 
-    joystickX = 0;
-    joystickY = 0;
+    joystickX=0;
+    joystickY=0;
 
-    sprinting = false;
+    sprinting=false;
 
-    let result = "DRAW";
+    let result="DRAW";
 
-    if(blueScore > redScore){
-        result = "YOU WIN!";
-    }
+    if(blueScore>redScore)
+        result="YOU WIN!";
 
-    if(blueScore < redScore){
-        result = "YOU LOSE!";
-    }
+    if(blueScore<redScore)
+        result="YOU LOSE!";
 
     document.getElementById(
         "result"
-    ).textContent = result;
+    ).textContent=result;
 
     document.getElementById(
         "finalScore"
-    ).textContent =
+    ).textContent=
         `BLUE ${blueScore} — ${redScore} RED`;
 
     document.getElementById(
+        "finalStats"
+    ).innerHTML=
+        `Shots: ${shots}<br>
+         Tackles: ${tackles}<br>
+         Passes: ${passes}`;
+
+    document.getElementById(
         "gameOver"
-    ).style.display = "flex";
+    ).style.display="flex";
 }
 
 
 /* =====================================================
-   START / RESTART
+   RESET
 ===================================================== */
 
-function startGame(){
+function resetGame(){
 
-    blueScore = 0;
-    redScore = 0;
+    blueScore=0;
+    redScore=0;
 
-    timeLeft = 90;
+    shots=0;
+    tackles=0;
+    passes=0;
 
-    gameRunning = true;
+    timeLeft=90;
+
+    timerAccumulator=0;
+
+    gameRunning=true;
+
+    activeIndex=0;
+
+    player=blueTeam[0];
 
     updateScore();
+    updateStats();
     updateTimer();
+    updateActivePlayer();
 
-    player.position.set(
-        0,
-        0,
-        10
-    );
-
-    player.rotation.y = 0;
+    ballOwner=null;
 
     ball.position.set(
-        0,
-        .35,
-        7
+        0,.35,7
     );
 
     ballVelocity.set(
-        0,
-        0,
-        0
+        0,0,0
     );
+
+
+    bluePositions.forEach(
+        (pos,i)=>{
+
+            blueTeam[i]
+            .position.set(
+                pos[0],
+                0,
+                pos[1]
+            );
+        }
+    );
+
+
+    redPositions.forEach(
+        (pos,i)=>{
+
+            redTeam[i]
+            .position.set(
+                pos[0],
+                0,
+                pos[1]
+            );
+        }
+    );
+
 
     goalkeeper.position.set(
-        0,
-        0,
-        -17.2
-    );
-
-    enemies[0].position.set(
-        -7,0,0
-    );
-
-    enemies[1].position.set(
-        7,0,0
-    );
-
-    enemies[2].position.set(
-        -4,0,-7
-    );
-
-    enemies[3].position.set(
-        4,0,-7
+        0,0,-17.2
     );
 
     document.getElementById(
         "message"
-    ).textContent =
+    ).textContent=
         "Move with the joystick";
 
     document.getElementById(
         "gameOver"
-    ).style.display =
-        "none";
+    ).style.display="none";
 }
 
 document.getElementById(
     "restart"
 ).addEventListener(
     "click",
-    startGame
+    resetGame
 );
 
 document.getElementById(
     "playAgain"
 ).addEventListener(
     "click",
-    startGame
+    resetGame
 );
 
 
 /* =====================================================
-   MAIN GAME LOOP
+   MAIN LOOP
 ===================================================== */
 
 const clock =
     new THREE.Clock();
-
-let timerAccumulator = 0;
 
 function animate(){
 
@@ -1178,19 +1650,19 @@ function animate(){
 
         /* TIMER */
 
-        timerAccumulator += delta;
+        timerAccumulator+=delta;
 
-        if(timerAccumulator >= 1){
+        if(timerAccumulator>=1){
 
-            timerAccumulator = 0;
+            timerAccumulator=0;
 
             timeLeft--;
 
             updateTimer();
 
-            if(timeLeft <= 0){
+            if(timeLeft<=0){
 
-                timeLeft = 0;
+                timeLeft=0;
 
                 updateTimer();
 
@@ -1199,29 +1671,29 @@ function animate(){
         }
 
 
-        /* PLAYER */
+        /* ACTIVE PLAYER */
 
         const speed =
             sprinting ? 11 : 7;
 
         player.position.x +=
-            joystickX *
-            speed *
+            joystickX*
+            speed*
             delta;
 
         player.position.z +=
-            joystickY *
-            speed *
+            joystickY*
+            speed*
             delta;
 
-        player.position.x =
+        player.position.x=
             THREE.MathUtils.clamp(
                 player.position.x,
                 -11,
                 11
             );
 
-        player.position.z =
+        player.position.z=
             THREE.MathUtils.clamp(
                 player.position.z,
                 -17,
@@ -1229,14 +1701,14 @@ function animate(){
             );
 
 
-        /* PLAYER ROTATION */
+        /* ROTATION */
 
         if(
-            Math.abs(joystickX) > .1 ||
-            Math.abs(joystickY) > .1
+            Math.abs(joystickX)>.1 ||
+            Math.abs(joystickY)>.1
         ){
 
-            player.rotation.y =
+            player.rotation.y=
                 Math.atan2(
                     joystickX,
                     joystickY
@@ -1244,54 +1716,29 @@ function animate(){
         }
 
 
-        /* BALL */
+        /* BALL CONTROL */
 
-        ballVelocity.y -=
-            12 * delta;
+        tryTakeBall();
 
-        ball.position.add(
-            ballVelocity
-            .clone()
-            .multiplyScalar(delta)
-        );
+        updatePossession();
 
-        if(ball.position.y < .35){
+        updateRedPossession();
 
-            ball.position.y = .35;
-
-            ballVelocity.y *= -.45;
-        }
+        updateBall(delta);
 
 
-        ballVelocity.x *=
-            Math.pow(.985,delta*60);
+        /* AI */
 
-        ballVelocity.z *=
-            Math.pow(.985,delta*60);
+        updateRedTeam(delta);
 
-
-        /* SIDE WALLS */
-
-        if(ball.position.x > 11.5){
-
-            ball.position.x = 11.5;
-
-            ballVelocity.x *= -.7;
-        }
-
-        if(ball.position.x < -11.5){
-
-            ball.position.x = -11.5;
-
-            ballVelocity.x *= -.7;
-        }
+        updateGoalkeeper(delta);
 
 
         /* GOALS */
 
         if(
             ball.position.z < -18.5 &&
-            Math.abs(ball.position.x) < 3
+            Math.abs(ball.position.x)<3
         ){
 
             scoreGoal("BLUE");
@@ -1299,20 +1746,17 @@ function animate(){
 
         if(
             ball.position.z > 18.5 &&
-            Math.abs(ball.position.x) < 3
+            Math.abs(ball.position.x)<3
         ){
 
             scoreGoal("RED");
         }
-
-
-        updateEnemies(delta);
-
-        updateGoalkeeper(delta);
     }
 
 
-    /* CAMERA */
+    /* =================================================
+       CAMERA
+    ================================================= */
 
     const offset =
         new THREE.Vector3(
@@ -1325,20 +1769,20 @@ function animate(){
         player.quaternion
     );
 
-    const target =
+    const cameraTarget =
         player.position
         .clone()
         .add(offset);
 
     camera.position.lerp(
-        target,
+        cameraTarget,
         .1
     );
 
     camera.lookAt(
         player.position.x,
         .5,
-        player.position.z - 3
+        player.position.z-3
     );
 
 
@@ -1355,10 +1799,10 @@ function animate(){
 
 window.addEventListener(
     "resize",
-    () => {
+    ()=>{
 
-        camera.aspect =
-            window.innerWidth /
+        camera.aspect=
+            window.innerWidth/
             window.innerHeight;
 
         camera.updateProjectionMatrix();
@@ -1371,9 +1815,11 @@ window.addEventListener(
 );
 
 
-/* START */
+/* =====================================================
+   START
+===================================================== */
 
-startGame();
+resetGame();
 
 animate();
 
